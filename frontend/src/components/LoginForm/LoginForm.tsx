@@ -1,9 +1,9 @@
 import type { FormProps } from 'antd';
 import { Button, Form, Input } from 'antd';
-import './LoginForm.css';
-import axiosInstance from '../../utils/axios';
-import { toast } from 'react-toastify';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import axiosInstance from '../../utils/axios';
+import './LoginForm.css';
 
 interface LoginFormProps {
   fetchAuthStatus: () => void;

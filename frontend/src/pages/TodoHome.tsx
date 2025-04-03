@@ -1,28 +1,38 @@
-import { useEffect } from 'react';
-import axiosInstance from '../utils/axios';
+import AddTodo from '../components/AddTodo';
+import TodoList from '../components/TodoList';
+import { Button } from 'antd';
 
 const TodoHome = () => {
-  const createTodo = async () => {
-    try {
-      const response = await axiosInstance.patch(
-        'api/todo/67ebb7fe1daeda5582f83c57',
-        {
-          status: 'completed',
-          description: 'Updated description',
-          tags: ['updated', 'tag'],
-        }
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  return (
+    <>
+      <header
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1em',
+          backgroundColor: '#f7f8fa',
+          borderBottom: '1px solid #eaeaea',
+          marginBottom: '1em',
+        }}
+      >
+        <h2 style={{ margin: 0 }}>TodoApp</h2>
+        <Button type="primary" danger>
+          Logout
+        </Button>
+      </header>
 
-  useEffect(() => {
-    createTodo();
-  }, []);
-
-  return <div>TodoHome</div>;
+      <div
+        style={{
+          maxWidth: '1000px',
+          margin: '0 auto',
+        }}
+      >
+        <AddTodo />
+        <TodoList />
+      </div>
+    </>
+  );
 };
 
 export default TodoHome;

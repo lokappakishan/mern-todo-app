@@ -29,19 +29,19 @@ const todoSchema = new mongoose.Schema({
   },
 });
 
-// Middleware to auto-update the updatedAt field on save
+// Middleware to auto update the updatedAt field on save
 todoSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-// Middleware to auto-update the updatedAt field on update
+// Middleware to auto update the updatedAt field on update
 todoSchema.pre('updateOne', function (next) {
   this.set({ updatedAt: Date.now() });
   next();
 });
 
-// Middleware to auto-update the updatedAt field on findOneAndUpdate
+// Middleware to auto update the updatedAt field on findOneAndUpdate
 todoSchema.pre('findOneAndUpdate', function (next) {
   this.set({ updatedAt: Date.now() });
   next();
