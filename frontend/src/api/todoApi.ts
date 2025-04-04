@@ -1,16 +1,5 @@
+import { TodoFilters, TodoInput } from '../types/todo';
 import axiosInstance from '../utils/axios';
-
-type TodoFilters = {
-  status?: string;
-  page?: number;
-  limit?: number;
-};
-
-type TodoInput = {
-  description: string;
-  status: string;
-  tags: string | string[];
-};
 
 function returnTagsArray(todoData: TodoInput) {
   return typeof todoData.tags === 'string'

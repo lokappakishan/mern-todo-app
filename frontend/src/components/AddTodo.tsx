@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button, Input, Select } from 'antd';
 import { useState } from 'react';
 import { addTodo } from '../api/todoApi';
+import { toast } from 'react-toastify';
 
 interface todoDataType {
   description: string;
@@ -21,6 +22,7 @@ const AddTodo = () => {
   const { mutate: addTodoMutation } = useMutation({
     mutationFn: addTodo,
     onSuccess: () => {
+      toast.success('added successfully');
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       // Reset form or show success message
       setTodoData({
@@ -35,6 +37,7 @@ const AddTodo = () => {
   });
 
   const handleChange = (name: string, value: string) => {
+    setDescriptionError(null);
     setTodoData({ ...todoData, [name]: value });
   };
 
