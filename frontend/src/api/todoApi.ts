@@ -12,6 +12,15 @@ type TodoInput = {
   tags: string | string[];
 };
 
+function returnTagsArray(todoData: TodoInput) {
+  return typeof todoData.tags === 'string'
+    ? todoData.tags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== '')
+    : todoData.tags;
+}
+
 export async function fetchTodos({
   queryKey,
 }: {
@@ -26,13 +35,7 @@ export async function fetchTodos({
 }
 
 export async function addTodo(todoData: TodoInput) {
-  const tagsArray =
-    typeof todoData.tags === 'string'
-      ? todoData.tags
-          .split(',')
-          .map((tag) => tag.trim())
-          .filter((tag) => tag !== '')
-      : todoData.tags;
+  const tagsArray = returnTagsArray(todoData);
 
   const payload = {
     ...todoData,
@@ -45,5 +48,22 @@ export async function addTodo(todoData: TodoInput) {
 
 export async function deleteTodo(id: string) {
   const { data } = await axiosInstance.delete(`/api/todo/${id}`);
+  return data;
+}
+
+export async function updateTodo({
+  id,
+  todoData,
+}: {
+  id: string;
+  todoData: TodoInput;
+}) {
+  const tagsArray = returnTagsArray(todoData);
+
+  const payload = {
+    ...todoData,
+    tags: tagsArray,
+  };
+  const { data } = await axiosInstance.patch(`/api/todo/${id}`, payload);
   return data;
 }
