@@ -1,13 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button, Modal, Input, Select } from 'antd';
-import { deleteTodo, updateTodo } from '../api/todoApi';
+import { Button } from 'antd';
 import { useState } from 'react';
-
-interface TodoInput {
-  description: string;
-  status: string;
-  tags: string | string[];
-}
+import { deleteTodo } from '../api/todoApi';
+import EditTodoModal from './EditTodoModal';
+import { TodoInput } from '../types/todo';
+import { toast } from 'react-toastify';
 
 export function TodoListItemRight({
   todoId,
@@ -29,17 +26,7 @@ export function TodoListItemRight({
   const { mutate: deleteTodoMutation } = useMutation({
     mutationFn: deleteTodo,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-    },
-    onError: (error) => {
-      console.error('Failed to delete todo:', error);
-    },
-  });
-
-  // update mutation
-  const { mutate: updateMutation } = useMutation({
-    mutationFn: updateTodo,
-    onSuccess: () => {
+      toast.success('delete successfully');
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
     onError: (error) => {
@@ -51,10 +38,6 @@ export function TodoListItemRight({
     deleteTodoMutation(id);
   };
 
-  const handleChange = (name: string, value: string) => {
-    setTodoData({ ...todoData, [name]: value });
-  };
-
   const showModal = () => {
     setTodoData({
       description: todo.description,
@@ -64,53 +47,19 @@ export function TodoListItemRight({
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    updateMutation({ id: todoId, todoData });
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div style={{ display: 'flex', gap: '0.5em', justifyContent: 'flex-end' }}>
       <Button size="small" onClick={showModal}>
         Edit
       </Button>
 
-      <Modal
-        title="Edit Todo"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-          <Input
-            name="description"
-            value={todoData.description}
-            placeholder="Description"
-            onChange={(e) => handleChange('description', e.target.value)}
-          />
-
-          <Select
-            value={todoData.status}
-            onChange={(value) => handleChange('status', value)}
-            options={[
-              { value: 'pending', label: 'Pending' },
-              { value: 'in progress', label: 'In Progress' },
-              { value: 'completed', label: 'Completed' },
-            ]}
-          />
-
-          <Input
-            name="tags"
-            value={todoData.tags}
-            placeholder="Tags"
-            onChange={(e) => handleChange('tags', e.target.value)}
-          />
-        </div>
-      </Modal>
+      <EditTodoModal
+        todoData={todoData}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        todoId={todoId}
+        setTodoData={setTodoData}
+      />
 
       <Button size="small" danger onClick={() => handleClickDelete(todoId)}>
         Delete
