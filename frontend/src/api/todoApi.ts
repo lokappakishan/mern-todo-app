@@ -42,3 +42,8 @@ export async function addTodo(todoData: TodoInput) {
   const { data } = await axiosInstance.post('/api/todo', payload);
   return data;
 }
+
+export async function deleteTodo(id: string) {
+  const { data } = await axiosInstance.delete(`/api/todo/${id}`);
+  return data;
+}

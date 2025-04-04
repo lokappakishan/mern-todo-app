@@ -18,7 +18,7 @@ const AddTodo = () => {
   const [descriptionError, setDescriptionError] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate: addTodoMutation } = useMutation({
     mutationFn: addTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
@@ -44,7 +44,7 @@ const AddTodo = () => {
       return;
     }
     setDescriptionError(null);
-    mutate(todoData);
+    addTodoMutation(todoData);
   };
 
   return (
