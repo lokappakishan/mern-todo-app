@@ -29,7 +29,7 @@ export function TodoListItem({
       >
         <TodoListItemLeft description={description} tags={tags} />
         <TodoListItemMiddle status={status} />
-        <TodoListItemRight />
+        <TodoListItemRight todoId={_id} todo={{ description, status, tags }} />
       </div>
 
       {showDivider && (
