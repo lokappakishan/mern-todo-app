@@ -6,6 +6,12 @@ type TodoFilters = {
   limit?: number;
 };
 
+type TodoInput = {
+  description: string;
+  status: string;
+  tags: string | string[];
+};
+
 export async function fetchTodos({
   queryKey,
 }: {
@@ -16,5 +22,23 @@ export async function fetchTodos({
   const { data } = await axiosInstance.get('/api/todo', {
     params: { status, page, limit },
   });
+  return data;
+}
+
+export async function addTodo(todoData: TodoInput) {
+  const tagsArray =
+    typeof todoData.tags === 'string'
+      ? todoData.tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag !== '')
+      : todoData.tags;
+
+  const payload = {
+    ...todoData,
+    tags: tagsArray,
+  };
+
+  const { data } = await axiosInstance.post('/api/todo', payload);
   return data;
 }
