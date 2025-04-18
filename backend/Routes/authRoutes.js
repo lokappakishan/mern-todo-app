@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 const authRouter = express.Router();
 const saltRounds = 10;
-const SECRET = 'its2025LetsDoIt';
+const SECRET = process.env.SECRET;
 
 // @route POST /api/auth/register
 // @desc Register a new user
