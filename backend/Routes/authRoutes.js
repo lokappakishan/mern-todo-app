@@ -134,6 +134,20 @@ authRouter.get('/check-auth', (req, res) => {
   }
 });
 
+// @route GET /api/auth/logout
+// @desc Logs out the user by clearing the cookie
+// @access Public
+authRouter.get('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
+  });
+  return res
+    .status(200)
+    .json({ success: true, message: 'Logged out successfully' });
+});
+
 function validateCredentials(credentials) {
   const userSchema = Joi.object({
     email: Joi.string().email().min(5).max(50).required(),

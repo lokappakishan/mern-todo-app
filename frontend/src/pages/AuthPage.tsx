@@ -42,7 +42,7 @@ const AuthPage = () => {
     <div>
       <div>
         {checkAuthStatus ? (
-          <TodoHome />
+          <TodoHome fetchAuthStatus={fetchAuthStatus} />
         ) : (
           <LoginRegisterForm fetchAuthStatus={fetchAuthStatus} />
         )}

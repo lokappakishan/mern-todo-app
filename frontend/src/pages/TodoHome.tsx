@@ -1,8 +1,24 @@
+import { Button } from 'antd';
+import axios from 'axios';
+import { FC } from 'react';
 import AddTodo from '../components/AddTodo';
 import TodoList from '../components/TodoList';
-import { Button } from 'antd';
 
-const TodoHome = () => {
+type TodoHomeProps = {
+  fetchAuthStatus: () => void;
+};
+
+const TodoHome: FC<TodoHomeProps> = ({ fetchAuthStatus }) => {
+  const handleLogout = async () => {
+    try {
+      await axios.get('http://localhost:5001/api/auth/logout', {
+        withCredentials: true,
+      });
+      fetchAuthStatus();
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
   return (
     <>
       <header
@@ -17,7 +33,7 @@ const TodoHome = () => {
         }}
       >
         <h2 style={{ margin: 0 }}>TodoApp</h2>
-        <Button type="primary" danger>
+        <Button type="primary" danger onClick={handleLogout}>
           Logout
         </Button>
       </header>
