@@ -63,6 +63,7 @@ const AddTodo = () => {
     >
       <div style={{ flex: 2 }}>
         <Input
+          data-cy="input-description"
           name="description"
           value={todoData.description}
           placeholder="description"
@@ -75,6 +76,7 @@ const AddTodo = () => {
       </div>
 
       <Select
+        data-cy="select-status"
         value={todoData.status}
         style={{ width: 150 }}
         onChange={(value) => handleChange('status', value)}
@@ -85,13 +87,14 @@ const AddTodo = () => {
         ]}
       />
       <Input
+        data-cy="input-tags"
         name="tags"
         value={todoData.tags}
         placeholder="tags"
         style={{ flex: 1 }}
         onChange={(e) => handleChange(e.target.name, e.target.value)}
       />
-      <Button type="primary" onClick={handleClickAdd}>
+      <Button type="primary" onClick={handleClickAdd} data-cy="btn-add">
         Add
       </Button>
     </div>
