@@ -19,6 +19,7 @@ export function TodoListItem({
     <>
       <div
         key={_id}
+        data-cy="todo-item"
         style={{
           display: 'flex',
           alignItems: 'center',
