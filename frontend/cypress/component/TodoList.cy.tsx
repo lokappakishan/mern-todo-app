@@ -64,4 +64,24 @@ describe('<TodoList />', () => {
     // check for todo list items
     cy.get('[data-cy="todo-item"]').should('have.length', 0);
   });
+
+  it('displays error message on failed todos fetch', () => {
+    // Intercept but simulate a 404 error
+    cy.intercept('GET', '**/api/todo', {
+      statusCode: 404,
+      body: '<html><body>Not Found</body></html>',
+      headers: { 'content-type': 'text/html' },
+    }).as('getTodos');
+
+    // Mount the component
+    renderWithQueryClient(<TodoList />);
+
+    // Wait for the request to be made
+    cy.wait('@getTodos');
+
+    // Assert that error message is shown
+    cy.contains('Error! Request failed with status code 404').should(
+      'be.visible'
+    );
+  });
 });
