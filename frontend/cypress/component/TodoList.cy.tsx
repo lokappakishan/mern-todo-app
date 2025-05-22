@@ -84,4 +84,22 @@ describe('<TodoList />', () => {
       'be.visible'
     );
   });
+
+  it('shows loading state while fetching todos', () => {
+    // Simulate network delay
+    cy.intercept('GET', '**/api/todo', (req) => {
+      req.on('response', (res) => {
+        res.setDelay(1000);
+      });
+    }).as('getTodos');
+
+    // Mount component
+    renderWithQueryClient(<TodoList />);
+
+    // Check for loading state before data appears
+    cy.contains('Loading...').should('be.visible');
+
+    // Wait for request to finish and remove loading
+    cy.wait('@getTodos');
+  });
 });
